@@ -5,7 +5,6 @@
  *    To install this plugin just drop it into your smarty plugins folder.
  *
  * @author Jeremy Pyne <jeremy.pyne@gmail.com>
- * - Donationsi: Accepted via PayPal at the above address.
  * - Updated: 02/10/2010 - Version 3.2
  * - File: smarty/plugins/compiler.switch.php
  * - Licence: CC:BY/NC/SA  http://creativecommons.org/licenses/by-nc-sa/3.0/
