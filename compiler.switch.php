@@ -2,7 +2,13 @@
 /**
  * Switch statement plugin for smarty.
  *    This smarty plugin provides php switch statement functionality in smarty tags.
- *    To install this plugin just drop it into your smarty plugins folder.
+ *    To install this plugin drop it into your smarty plugins folder.  You will also need to manually
+ * 	load the plugin sot hat all the hooks are registered properly.  Add the following line after
+ * 	you load smarty and create an instance of it in your source code.
+ * 
+ * <code>
+ *   $this->smartyObj->loadPlugin('smarty_compiler_switch');	
+ * </code>
  *
  * @author Jeremy Pyne <jeremy.pyne@gmail.com>
  * - Updated: 02/10/2010 - Version 3.2
