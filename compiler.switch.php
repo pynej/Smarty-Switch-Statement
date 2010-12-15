@@ -112,17 +112,18 @@ class Smarty_Compiler_Switch extends Smarty_Internal_CompileBase {
  */
     public function compile($args, $compiler){
         $this->compiler = $compiler;
-        $attr = $this->_get_attributes($args); 
+        $attr = $this->_get_attributes($args);
+	$_output = '';
 
         $this->_open_tag('switch',array($compiler->tag_nocache));
 
         if (is_array($attr['var'])) {
-            $_output = "<?php if (!isset(\$_smarty_tpl->tpl_vars[".$attr['var']['var']."])) \$_smarty_tpl->tpl_vars[".$attr['var']['var']."] = new Smarty_Variable;";
+            $_output .= "<?php if (!isset(\$_smarty_tpl->tpl_vars[".$attr['var']['var']."])) \$_smarty_tpl->tpl_vars[".$attr['var']['var']."] = new Smarty_Variable;";
             $_output .= "switch (\$_smarty_tpl->tpl_vars[".$attr['var']['var']."]->value = ".$attr['var']['value']."){?>";
-            return $_output;
         } else {
-            return '<?php switch (' . $attr['var'] . '){?>';
+            $_output .= '<?php switch (' . $attr['var'] . '){?>';
         }
+	return $_output;
     }
 }
 
@@ -144,6 +145,7 @@ class Smarty_Compiler_Case extends Smarty_Internal_CompileBase {
     public function compile($args, $compiler){
         $this->compiler = $compiler;
         $attr = $this->_get_attributes($args);
+	$_output = '';
 
         list($last_tag, $last_attr) = $this->compiler->_tag_stack[count($this->compiler->_tag_stack) - 1];
 
@@ -151,17 +153,17 @@ class Smarty_Compiler_Case extends Smarty_Internal_CompileBase {
         {
 	    list($break, $compiler->tag_nocache) = $this->_close_tag(array('case'));
             if($last_attr[0])
-                $_output = '<?php break;?>';
+                $_output .= '<?php break;?>';
         }
-        $this->_open_tag('case',array($attr['break'],$compiler->tag_nocache));
+        $this->_open_tag('case', array(isset($attr['break']) ? $attr['break'] : false, $compiler->tag_nocache));
 
         if (is_array($attr['value'])) {
             $_output .= "<?php if (!isset(\$_smarty_tpl->tpl_vars[".$attr['value']['var']."])) \$_smarty_tpl->tpl_vars[".$attr['value']['var']."] = new Smarty_Variable;";
             $_output .= "case \$_smarty_tpl->tpl_vars[".$attr['value']['var']."]->value = ".$attr['value']['value'].":?>";
-            return $_output;
         } else {
-            return $_output . '<?php case ' . $attr['value'] . ':?>';
+            $_output .= '<?php case ' . $attr['value'] . ':?>';
         }
+	return $_output;
     }
 }
 
@@ -182,17 +184,20 @@ class Smarty_Compiler_Default extends Smarty_Internal_CompileBase {
     public function compile($args, $compiler){
         $this->compiler = $compiler;
         $attr = $this->_get_attributes($args);
+	$_output = '';
 
         list($last_tag, $last_attr) = $this->compiler->_tag_stack[count($this->compiler->_tag_stack) - 1];
         if($last_tag == 'case')
         {
             list($break, $compiler->tag_nocache) = $this->_close_tag(array('case'));
             if($last_attr[0])
-                $_output = '<?php break;?>';
+                $_output .= '<?php break;?>';
         }
-        $this->_open_tag('case',array($attr['break'],$compiler->tag_nocache));
+        $this->_open_tag('case', array(isset($attr['break']) ? $attr['break'] : false, $compiler->tag_nocache));
 
-        return $_output . '<?php default:?>';
+        $_output .= '<?php default:?>';
+
+	return $_output;
     }
 }
 
