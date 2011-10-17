@@ -32,6 +32,8 @@
  *       Fixed a bug when chaining multiple {case} statements without a {break}.
  *    Version 3.5: 
  *       Updated to work with Smarty 3.0 release.  (Tested and working with 3.0.5, no longer compatible with 3.0rcx releases.)  
+ *    Version 3.6:
+ *       Updated to work with Smarty 3.1 release.  (Tested and working on 3.1.3, No longer compatible with 3.0 releases.)
  * 
  * - Bugs/Notes:
  *
