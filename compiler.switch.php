@@ -112,10 +112,10 @@ class Smarty_Compiler_Switch extends Smarty_Internal_CompileBase {
  */
     public function compile($args, $compiler){
         $this->compiler = $compiler;
-        $attr = $this->_get_attributes($args);
+        $attr = $this->getAttributes($compiler, $args);
 	$_output = '';
 
-        $this->_open_tag('switch',array($compiler->tag_nocache));
+        $this->openTag($compiler, 'switch',array($compiler->tag_nocache));
 
         if (is_array($attr['var'])) {
             $_output .= "<?php if (!isset(\$_smarty_tpl->tpl_vars[".$attr['var']['var']."])) \$_smarty_tpl->tpl_vars[".$attr['var']['var']."] = new Smarty_Variable;";
@@ -144,18 +144,18 @@ class Smarty_Compiler_Case extends Smarty_Internal_CompileBase {
  */
     public function compile($args, $compiler){
         $this->compiler = $compiler;
-        $attr = $this->_get_attributes($args);
+        $attr = $this->getAttributes($compiler, $args);
 	$_output = '';
 
         list($last_tag, $last_attr) = $this->compiler->_tag_stack[count($this->compiler->_tag_stack) - 1];
 
         if($last_tag == 'case')
         {
-	    list($break, $compiler->tag_nocache) = $this->_close_tag(array('case'));
+	    list($break, $compiler->tag_nocache) = $this->closeTag($compiler, array('case'));
             if($last_attr[0])
                 $_output .= '<?php break;?>';
         }
-        $this->_open_tag('case', array(isset($attr['break']) ? $attr['break'] : false, $compiler->tag_nocache));
+        $this->openTag($compiler, 'case', array(isset($attr['break']) ? $attr['break'] : false, $compiler->tag_nocache));
 
         if (is_array($attr['value'])) {
             $_output .= "<?php if (!isset(\$_smarty_tpl->tpl_vars[".$attr['value']['var']."])) \$_smarty_tpl->tpl_vars[".$attr['value']['var']."] = new Smarty_Variable;";
@@ -183,17 +183,17 @@ class Smarty_Compiler_Default extends Smarty_Internal_CompileBase {
  */
     public function compile($args, $compiler){
         $this->compiler = $compiler;
-        $attr = $this->_get_attributes($args);
+        $attr = $this->getAttributes($compiler, $args);
 	$_output = '';
 
         list($last_tag, $last_attr) = $this->compiler->_tag_stack[count($this->compiler->_tag_stack) - 1];
         if($last_tag == 'case')
         {
-            list($break, $compiler->tag_nocache) = $this->_close_tag(array('case'));
+            list($break, $compiler->tag_nocache) = $this->closeTag($compiler, array('case'));
             if($last_attr[0])
                 $_output .= '<?php break;?>';
         }
-        $this->_open_tag('case', array(isset($attr['break']) ? $attr['break'] : false, $compiler->tag_nocache));
+        $this->openTag($compiler, 'case', array(isset($attr['break']) ? $attr['break'] : false, $compiler->tag_nocache));
 
         $_output .= '<?php default:?>';
 
@@ -218,9 +218,9 @@ class Smarty_Compiler_Break extends Smarty_Internal_CompileBase {
 
     public function compile($args, $compiler){
         $this->compiler = $compiler;
-        $attr = $this->_get_attributes($args);
+        $attr = $this->getAttributes($compiler, $args);
 
-        list($break, $compiler->tag_nocache) = $this->_close_tag(array('case'));
+        list($break, $compiler->tag_nocache) = $this->closeTag($compiler, array('case'));
 
         return '<?php break;?>';
     }
@@ -242,9 +242,9 @@ class Smarty_Compiler_Caseclose extends Smarty_Internal_CompileBase {
 
     public function compile($args, $compiler){
         $this->compiler = $compiler;
-        $attr = $this->_get_attributes($args);
+        $attr = $this->getAttributes($compiler, $args);
 
-        list($break, $compiler->tag_nocache) = $this->_close_tag(array('case'));
+        list($break, $compiler->tag_nocache) = $this->closeTag($compiler, array('case'));
 
         return '<?php break;?>';
     }
@@ -265,12 +265,12 @@ class Smarty_Compiler_Switchclose extends Smarty_Internal_CompileBase {
 
     public function compile($args, $compiler){
         $this->compiler = $compiler;
-        $attr = $this->_get_attributes($args);
+        $attr = $this->getAttributes($compiler, $args);
 
         list($last_tag, $last_attr) = $this->compiler->_tag_stack[count($this->compiler->_tag_stack) - 1];
         if(($last_tag == 'case' || $last_tag == 'default'))
-            list($break, $compiler->tag_nocache) = $this->_close_tag(array('case'));
-        list($compiler->tag_nocache) = $this->_close_tag(array('switch'));
+            list($break, $compiler->tag_nocache) = $this->closeTag($compiler, array('case'));
+        list($compiler->tag_nocache) = $this->closeTag($compiler, array('switch'));
 
         return '<?php }?>';
     }
