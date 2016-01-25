@@ -12,7 +12,7 @@
  * 
  * @author Jeremy Pyne <jeremy.pyne@gmail.com>
  * - Donations: Accepted via PayPal at the above address.
- * - Updated: 02/10/2010 - Version 3.2
+ * - Updated: 01/25/2016 - Version 3.7
  * - File: smarty/plugins/compiler.switch.php
  * - Licence: CC:BY/NC/SA  http://creativecommons.org/licenses/by-nc-sa/3.0/
  * 
@@ -34,6 +34,8 @@
  *       Updated to work with Smarty 3.0 release.  (Tested and working with 3.0.5, no longer compatible with 3.0rcx releases.)  
  *    Version 3.6:
  *       Updated to work with Smarty 3.1 release.  (Tested and working on 3.1.3, No longer compatible with 3.0 releases.)
+ *    Version 3.7:
+ *       Updated to work with Smarty 3.1.28 release.  (Tested and working on 3.1.29,)
  * 
  * - Bugs/Notes:
  *
@@ -94,9 +96,6 @@
  * {/switch}
  * </code>
  */
-
-//Register the post and pre filters as they are not auto-registered.
-$this->registerFilter('post', 'smarty_postfilter_switch');
 
 class Smarty_Compiler_Switch extends Smarty_Internal_CompileBase {
     public $required_attributes = array('var');
@@ -284,10 +283,10 @@ class Smarty_Compiler_Switchclose extends Smarty_Internal_CompileBase {
  *       for layout would cause php errors witch this reged will fix. 
  *
  * @param string $compiled
- * @param Smarty_Compiler $smarty
+ * @param Smarty_Internal_Template $$template
  * @return string
  */
-function smarty_postfilter_switch($compiled, &$smarty) {
+function smarty_postfilter_switch($compiled, Smarty_Internal_Template $template) {
         // Remove the extra spaces after the start of the switch tag and before the first case statement.
         return preg_replace('/({ ?\?>)\s+(<\?php case)/', "$1\n$2", $compiled);
 }
